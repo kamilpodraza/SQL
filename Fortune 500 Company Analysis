@@ -55,3 +55,44 @@ VALUES
     ('Company II', 'Telecommunications', 110.5, 2000, 1, 21, 12, 4.9),
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
+
+# Analysis:
+SELECT *
+FROM fortune_companies;
+
+/* Grouping the data by employee count using a CASE statement. */
+SELECT COUNT(*),
+CASE WHEN employees >= 1000000 THEN "Over 1 million employees"
+WHEN employees >= 100000 THEN "Over 100 thousand employees"
+WHEN employees >= 5000 THEN "Over 5 thousand employees"
+ELSE "Less than 5 thousand employees" END AS "employee_count"
+FROM fortune_companies
+GROUP BY employee_count;
+
+/* Using a HAVING clause to determine which companies in the Tech Industry provide healthcare benefits. */
+SELECT *
+FROM fortune_companies
+WHERE industry = "Technology"
+GROUP BY company_name
+HAVING healthcare_benefits = 1;
+
+/* Using logical operators AND to filter the data where company revenue is high and have minimum 15 days PTO. */
+SELECT company_name
+FROM fortune_companies
+WHERE revenue > 350.00
+AND paid_time_off_days >= 15
+;
+
+/* Using logical operators OR to filter the data between tenure time or PTO days. */
+SELECT *
+FROM fortune_companies
+WHERE avg_employee_tenure <= 5.5
+OR paid_time_off_days >= 20
+GROUP BY industry
+;
+
+/* Use an aggregate function SUM to return summary statistics number of employees in each industry. */
+SELECT industry, SUM(employees) AS sum_employee_count
+FROM fortune_companies
+GROUP BY industry
+ORDER BY sum_employee_count desc;

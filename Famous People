@@ -1,0 +1,40 @@
+# Create a table of "famous people" and use JOINS to create a easy to read list.
+CREATE TABLE musicians (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT,
+    age INTEGER);
+    
+INSERT INTO musicians (fullname, age) VALUES ("Calvin Harris", 39);
+INSERT INTO musicians (fullname, age) VALUES ("Tiesto", 54);
+INSERT INTO musicians (fullname, age) VALUES ("David Guetta", 55);
+INSERT INTO musicians (fullname, age) VALUES ("J Cole", 38);
+INSERT INTO musicians (fullname, age) VALUES ("Kendrick Lamar", 36);
+INSERT INTO musicians (fullname, age) VALUES ("Kid Cudi", 39);
+
+CREATE table songs  (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    musician_id INTEGER,
+    song TEXT,
+    genre TEXT,
+    year INTEGER);
+    
+INSERT INTO songs (musician_id, song, genre, year) VALUES (1, "We Found Love", "EDM", 2011);
+INSERT INTO songs (musician_id, song, genre, year) VALUES (2, "Don't Be Shy", "EDM", 2023);
+INSERT INTO songs (musician_id, song, genre, year) VALUES (3, "When Love Takes Over", "EDM", 2009);
+INSERT INTO songs (musician_id, song, genre, year) VALUES (4, "Lights Please", "RAP", 2011);
+INSERT INTO songs (musician_id, song, genre, year) VALUES (5, "Alright", "RAP", 2015);
+INSERT INTO songs (musician_id, song, genre, year) VALUES (6, "Down & Out", "RAP", 2008);
+
+# select the top songs of the artist by joining tables
+SELECT musicians.fullname, songs.song AS top_songs
+FROM musicians
+JOIN songs
+ON musicians.id=songs.musician_id
+;
+
+# display to song name, musician name, and song genre by joining tables.
+SELECT songs.song AS top_songs, musicians.fullname, genre
+FROM musicians
+JOIN songs
+ON musicians.id=songs.musician_id
+;

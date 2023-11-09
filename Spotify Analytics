@@ -1,0 +1,84 @@
+# For this project, I downloaded Spotify data from Kaggle.
+# Then I created a table to insert Spotify data into.
+# Finally, I performed analytics on the data using SQL. 
+
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+# Now, here are the questions I answered along with my code
+
+SELECT * FROM BIT_DB.Spotifydata;
+
+/* What is the top 10 most popular songs by artist and track? */
+
+SELECT artist_name, track_name, popularity
+FROM Spotifydata
+ORDER BY popularity desc
+LIMIT 10
+;
+
+/* What is the average danceability by artist and track? */
+
+SELECT artist_name, track_name, ROUND(danceability * 100) AS dancability_percentage
+FROM Spotifydata
+ORDER BY dancability_percentage desc
+;
+
+/* What is the average song length based on artist? */
+
+SELECT artist_name, ROUND(AVG(duration_ms/60000), 2) AS avg_song_lenght_min
+FROM Spotifydata
+GROUP BY artist_name
+ORDER BY avg_song_lenght_min desc
+;
+
+/* What is the most popular song by an artist? */
+
+SELECT artist_name, track_name, MAX(popularity) AS most_popular
+FROM Spotifydata
+GROUP BY artist_name
+ORDER BY most_popular desc
+;
+
+/* Find tracks with an energy level of 80% or more */
+
+SELECT artist_name, track_name, ROUND(energy * 100, 2) AS energy_percentage
+FROM Spotifydata
+WHERE energy_percentage >= 80
+ORDER BY energy_percentage desc
+;
+
+/* What is the average loudness of a song per artist */
+
+SELECT artist_name, AVG(loudness) AS avg_loudness
+FROM Spotifydata
+GROUP BY artist_name
+ORDER BY avg_loudness desc
+;
+
+/* How many songs does each artist have in the top 10 popularity */
+
+SELECT artist_name, COUNT(track_name) AS number_of_tracks, AVG(popularity) AS avg_popularity
+FROM Spotifydata
+WHERE popularity > 90
+GROUP BY artist_name
+ORDER BY number_of_tracks desc
+;
